@@ -1,0 +1,134 @@
+---
+title: "Matrices and Arrays"
+author: "tailwind"
+date: "1 June 2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Matrix
+
+A matrix is a data structure in which data can be stored in 2 dimesions. (rows and columns). Cross table reports are known as matrices. **Think row column intersection.**
+
+```{r}
+a = 1:12
+b = matrix(a,4,3,byrow = FALSE) ## data, no. of rows, no. of columns (nrow, ncol)
+b
+
+```
+
+By default values are entered in the matrix column-wise. To change it we change byrow=TRUE. If we overlook ncol*nrow == len(data), R will copy columnar data by default (meaning the columns will be repeated until the argument on number of rows is satisfied or vice versa is byrow is set to TRUE.) This phenomenon in R is known as recycling.
+
+## Functions in Matrix: rbind(), cbind()
+
+rbind() is row bind and cbind() is column bind.
+
+```{r}
+#examples
+b <- rbind(b,c(10,20,30)) #to ensure b is 5 rows
+b <- cbind(b,c(12,16,20,24,28)) #now input 5 values, if you put more than 5 values, extra values will get dropped. If you put less than 5, recycling will occur
+b
+```
+
+##Headers in Matrix
+
+Functions used: colnames(), rownames()
+
+```{r}
+colnames(b)=c("Pune", "Mumbai", "Nashik", "Nagpur")
+rownames(b) =c ('Jan', 'Feb','Mar','Apr', 'May')
+b
+```
+
+Since the data is 2-dimensional, for extracting values from the data, we need to give both the dimensions. We give number of row and number of column to extract a particular value. This is very similar to function index in MS Excel.
+
+```{r}
+two_three <- b[2,3] #extract value from b, 2nd row and 3rd column
+four_one <- b[4,1] #extract value from b, 4th row and 1st column
+
+print(c(two_three, four_one))
+
+```
+
+To access entire rows or entire columns from the data, following codes can help.**Don't forget to put the comma!**
+
+```{r}
+b[4,]
+```
+
+```{r}
+#to make the above output appear in columnar format
+
+b[,2]
+
+```
+
+
+Even if the output is horizontal, notice the difference in the labels. The first output is for all columns in row #4 and the second output is for all the rows in column #2
+
+```{r}
+#to make the above output appear in columnar format
+
+mycol <- data.frame(b[,2])
+mycol
+
+```
+
+rowSums and columnSums can also be handled. rowSums will give output for all the values in the in the row. While implementing these functions, be wary of the fact the syntax of functions in R is case-sensitive.
+
+```{r}
+
+rowSums(b)
+
+
+```
+
+```{r}
+
+colSums(b)
+
+
+```
+
+Means can also be found using built-in R functions. 
+
+```{r}
+
+rowMeans(b)
+
+
+```
+
+```{r}
+
+colMeans(b)
+
+```
+
+We can drill down for particular month or particular region as well.
+
+```{r}
+sum(b[4,]) # sum of all elements in 4th Row
+
+```
+
+```{r}
+sum(b[,2]) # sum of all elements in 2nd Column
+
+```
+
+## Arrays
+**Arrays are multidimensional matrices**
+```{r}
+m = c(1,5,6)
+n = c(7,2,3,2,1,6)
+#Creating an array
+x = array(c(m,n),dim=c(3,3,2))
+x
+
+```

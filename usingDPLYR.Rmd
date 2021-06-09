@@ -1,0 +1,121 @@
+---
+title: "Using DPLYR"
+author: "tailwind"
+date: "3 June 2021"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## DPLYR and Data Frames
+
+Using dplyr (I think of it as 'DEPLOY R') makes working with datasets easy and intutive.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(dplyr)
+
+```
+
+Let's import some dummy data first.
+
+```{r}
+mydata <- read.csv("C:/Users/sai/Documents/1. CFA - Actuarial/1. Actuaries/0. Current/Regarding R/R practice/dataframe lesson/B2B after error resolution.csv")
+head(mydata)
+```
+
+As we can see, the data is quite messy, with a lot of columns being altogether irrelavant. Though it is possible to clean the data using base R functions, the dplyr package adds a lot of intuitive feeling to the process and is quite straight forward. So instead of using functions like subset() etc. we can just use the deployR(!) pipelines! DPLYR is quite rightfully described as the 'grammar of data manipulation.'
+
+Some functions in dplyr: **select, arrange, filter, distinct, mutate, transmute, summarize, group_by and pipe operator (%>%)**
+
+##1. Select
+
+We drop the NA columns or columns irrelevant for our analysis. The select function can also be used to 'deselect', using a negative(-) sign before the column that needs to be dropped. 
+
+```{r}
+mydata <- mydata %>% select(GSTIN.UIN.of.Recipient,Invoice.Number, Invoice.date, Invoice.Value,Place.Of.Supply,Rate,Taxable.Value)
+head(mydata)
+```
+
+## 2. Arrange
+
+Arrange function helps us in sorting the data in a desired format.
+
+```{r}
+mydata <- mydata %>% arrange(desc(Invoice.Value))
+head(mydata)
+```
+I used desc before the column name to tell R to give me the output in descending order of Invoice Amount. This helps me in knowing the high value invoices. (Be aware of the typos or case change, as R is case sensitive)
+
+##3. Filter
+Not just arrange, but extract based on column names. Let's say I want only the invoices whose value is greater than Rs. 5000 to appear in a subset of data that I want to select. Since I don't want to modify my data (upto this step), I can create a new variable and store the filtered records over there.
+
+```{r}
+afterFilt <- mydata %>% filter(Invoice.Value>5000) %>% arrange(Invoice.date)
+
+head(afterFilt)
+
+```
+The condition inside the filter function has to be a logical condition, meaning it should evaluate to TRUE or FALSE. Filter, at the backend evaluates these conditions and then returns records only for the values in the particular range which evaluate to TRUE.
+
+Thus, while filtering the data, it is of utmost importance that we set the filtration conditions in a way that is tailored to our objective.
+
+I now want only the sales whose tax rate was 12%. I can execute the same using the following code. I will save it to a new variable.
+
+```{r}
+
+filt_12_gt5000 <- afterFilt %>% filter(Rate=="12")
+
+head(filt_12_gt5000)
+```
+Similarly, I can mine for only 18 sale, but before that it makes sense that I check the 'levels' of of Rate column in my data. 
+
+```{r}
+levels(afterFilt$Rate)
+
+```
+But hey! an error! the data in Rate column is parsed as integers. I can use transmute to parse it as factor.
+
+```{r}
+
+rate_as_factor <- afterFilt %>% transmute(Rate = as.factor(Rate))
+levels(rate_as_factor$Rate)
+```
+Voila! The levels now appear!
+
+Coming back to my objective of filtering only the sale bills that have 18% tax rate in them.
+
+```{r}
+
+only18 <- afterFilt %>% filter(Rate=="18")
+head(only18)
+
+```
+
+##4. Mutate (and Transmute): Unleashing the power of DPLYR
+
+In the dataset that we originally imported, the tax amount was not calculated. Only Tax Rate and Taxable Value were given. Using mutate, I can create a new column in R that calculates tax amount and stores it in a new column. Further as a technicality, this tax amount is divided into CGST and SGST in 1:1 ratio. We will also make colums for that!
+
+```{r}
+inclTax <- mydata %>% mutate(Tax.Amount = (Rate/100)*Taxable.Value, CGST = 0.5*Tax.Amount, SGST = 0.5*Tax.Amount)
+onlyNew <- inclTax %>% select(Tax.Amount, CGST, SGST)
+head(onlyNew)
+
+```
+Voila! We have created new columns in the dataframe! 
+
+On similar lines, transmute() can also be used, but it replaces the old columns with new columns, whereas mutate() keeps old columns in place.
+
+Further, mutate() gives us the table along with new variables, whereas transmute() gives us only the new variables. Let's check it in the chunk of code below (we check for only transmute)
+
+```{r}
+#instead of mutate, I have used transmute.
+tax <- mydata %>% transmute(Tax.Amount = (Rate/100)*Taxable.Value, CGST = 0.5*Tax.Amount, SGST = 0.5*Tax.Amount)
+
+head(tax)
+
+```

@@ -1,0 +1,102 @@
+---
+title: "Objects"
+author: "tailwind"
+date: "31 May 2021"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## OBJECTS IN R
+
+In this document, we will look at the different object types available in R. Depending on your objective, the knowledge of different object types in R is of paramount importance for analysing data in R:
+
+#Level 1: Vectors
+
+```{r}
+vNum = c(1,2,3,4,5,6)
+vNum
+
+```
+
+#Level 2: Factors
+
+
+```{r}
+genders = factor(c("Male","Female","Male","Male","Female","Male","Female","Female","Male"))
+genders
+
+```
+
+Factor data structure helps us in making categories or create groups in the given dataset
+
+#Level 3: Matrices
+Matrices (singular: matrix) help store 2 dimensional data. One important point is to store the data of same type:
+
+```{r}
+#a vector 
+i = 1:12
+#converting the vector to matrix
+mymat = matrix(i,nrow=4,ncol=3)
+mymat
+```
+The elements are assigned to the matrix by column. This means that elements will be assigned to column 1 first and as the number of rows gets exhausted, the elements will start getting assigned to column 2, so on and so forth. If we want the assignment to happen by row, then we will have to say add an additional argument while creating matrix 'byrow' and set it to true
+```{r}
+mymat_byrow = matrix(i,nrow=4,ncol=3,byrow=TRUE)
+mymat_byrow
+```
+#Level 4: Arrays
+
+Arrays can store data in more than 2 dimensions.
+
+```{r}
+# creating a vetor
+v=1:24
+#we ensured 24 elements as multiplication of dims below will yield 24
+myArr = array(v,dim =c(4,3,2))
+myArr
+```
+
+Here, in the 'dim' argument, 4 is the number of rows, 3 is the number of columns and 2 is the number of matrices.
+
+#Level 5: Data Frames
+
+Most of the work in R is done through data frames. 
+**A data frame is defined as a 2-dimensional data structure or table in R, which has each variable of equal length.**
+
+All the columns will have the same number of records. However, it may be possible that some variables have *missing values* in some records.
+
+Alternatively, it can be said that a data frame is a table in R which stores multiple vectors simultaneously. These vectors can be numeric or text type. There may also be factors in a data frame.
+```{r}
+# creating vectors
+cities = c('Mumbai', 'Chennai', 'Delhi', 'Kolkata', 'Noida')
+sales = c(30,50,45,67,80)
+days = c('Mon', 'Tues', 'Wed', 'Thurs', 'Fri')
+
+#Creating a *dataframe*
+myDF = data.frame(cities, sales, days)
+myDF
+
+```
+
+#Level 6: List
+
+A list can store **objects** of various types. To check, we will output everything that we have done in this exercise using a list. It returns so with index(the order we put the object in the list). It helps as an imaginary folder inside R, if you will.
+
+```{r}
+# creating a list
+myList = list(vNum, genders,mymat,mymat_byrow,myArr,myDF)
+myList
+```
+
+Here is an example of referencing only a particular index from a list of objects.
+
+```{r}
+myList[3]
+```
+
