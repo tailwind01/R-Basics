@@ -1,0 +1,102 @@
+
+> 
+
+> pairedData <- readXL("C:/Users/sai/Documents/RWD/paired-data.xlsx", 
++   rownames=FALSE, header=TRUE, na="", sheet="Sheet1", stringsAsFactors=TRUE)
+
+> View(pairedData)
+
+> t.test(pairedData$Before,pairedData$After,paired=TRUE)
+
+	Paired t-test
+
+data:  pairedData$Before and pairedData$After
+t = -0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -8.150203  3.674012
+sample estimates:
+mean of the differences 
+              -2.238095 
+
+
+> t.test(pairedData$After,pairedData$Before,paired=TRUE)
+
+	Paired t-test
+
+data:  pairedData$After and pairedData$Before
+t = 0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.674012  8.150203
+sample estimates:
+mean of the differences 
+               2.238095 
+
+
+> pairedData <- readXL("C:/Users/sai/Documents/RWD/paired-data.xlsx", 
++   rownames=FALSE, header=TRUE, na="", sheet="Sheet1", stringsAsFactors=TRUE)
+
+> t.test(pairedData$After,pairedData$Before,paired=TRUE)
+
+	Paired t-test
+
+data:  pairedData$After and pairedData$Before
+t = 0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.674012  8.150203
+sample estimates:
+mean of the differences 
+               2.238095 
+
+
+> pairedData <- readXL("C:/Users/sai/Documents/RWD/paired-data.xlsx", 
++   rownames=FALSE, header=TRUE, na="", sheet="Sheet1", stringsAsFactors=TRUE)
+
+> pairedData <- readXL("C:/Users/sai/Documents/RWD/paired-data.xlsx", 
++   rownames=FALSE, header=TRUE, na="", sheet="Sheet1", stringsAsFactors=TRUE)
+
+> t.test(pairedData$After,pairedData$Before,paired=TRUE)
+
+	Paired t-test
+
+data:  pairedData$After and pairedData$Before
+t = 0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.674012  8.150203
+sample estimates:
+mean of the differences 
+               2.238095 
+
+
+> t.test(pairedData$After,pairedData$Before,paired=TRUE)
+
+	Paired t-test
+
+data:  pairedData$After and pairedData$Before
+t = 0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.674012  8.150203
+sample estimates:
+mean of the differences 
+               2.238095 
+
+
+> with(pairedData, (t.test(Before, After, alternative='two.sided', 
++   conf.level=.95, paired=TRUE)))
+
+	Paired t-test
+
+data:  Before and After
+t = -0.78967, df = 20, p-value = 0.439
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -8.150203  3.674012
+sample estimates:
+mean of the differences 
+              -2.238095 
+
+
